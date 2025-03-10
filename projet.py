@@ -27,7 +27,7 @@ nbItem, maxCap = lireFichier("data\pi-12-100-1000-001.kna")
 def tabuSearch():
     maxIter = 12
     xmin = solutionInitial()
-    x = xmin
+    x = xmin.copy()
     fmin = sommeProfit(xmin)
     i = 0
     tabTabu = []
@@ -40,10 +40,11 @@ def tabuSearch():
                 tabTabu.clear()
             tabTabu.append(xbis)
         if sommeProfit(xbis) < sommeProfit(xmin):
-            xmin = xbis
+            xmin = xbis.copy()
             fmin = sommeProfit(xbis)
+            print("c'est changer")
         print(x)
-        x = xbis
+        x = xbis.copy()
     return xmin, fmin
 
 def sommeProfit(listItem):
@@ -52,6 +53,7 @@ def sommeProfit(listItem):
     for i in range(0, nbItem):
         if listItem[i] == 1 :
             sum += int(tabProfit[i])
+    print(sum)
     return sum
 
 def isAccepted(listItem):
