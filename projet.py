@@ -1,8 +1,6 @@
 tabId = []
 tabProfit = []
 tabPoids = []
-nbItem = ""
-maxCap = ""
 
 
 #Remplissage des tableaux qui représente le graphe
@@ -22,8 +20,9 @@ def lireFichier(f):
         tabPoids.append(element[2].replace("\n", ""))
 
     fichier.close()
+    return int(nbItem), int(maxCap)
 
-lireFichier("data\pi-12-100-1000-001.kna")
+nbItem, maxCap = lireFichier("data\pi-12-100-1000-001.kna")
 
 def tabuSearch():
     maxIter = 12
@@ -43,6 +42,7 @@ def tabuSearch():
         if sommeProfit(xbis) < sommeProfit(xmin):
             xmin = xbis
             fmin = sommeProfit(xbis)
+        print(x)
         x = xbis
     return xmin, fmin
 
@@ -80,13 +80,13 @@ def maximiserProfit(listVoisin):
     betterVoisin = []
     i=0
     for i in range(0, len(listVoisin)):
-        if max < sommeProfit(listerVoisin[i]) : 
-            max = sommeProfit(listerVoisin[i])
-            betterVoisin = listerVoisin[i]
+        if max < sommeProfit(listVoisin[i]) : 
+            max = sommeProfit(listVoisin[i])
+            betterVoisin = listVoisin[i]
     return betterVoisin
 
 def solutionInitial():
-    return [0] * nbItem
+    return [0] * int(nbItem)
 
 print(maxCap)
 print(tabuSearch())
