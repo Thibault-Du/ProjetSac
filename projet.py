@@ -22,7 +22,7 @@ def lireFichier(f):
     fichier.close()
     return int(nbItem), int(maxCap)
 
-nbItem, maxCap = lireFichier("data\pi-12-100-1000-001.kna")
+nbItem, maxCap = lireFichier("data\pi-12-10000-1000-001.kna")
 
 def tabuSearch():
     maxIter = 12
@@ -33,17 +33,15 @@ def tabuSearch():
     tabTabu = []
     for i in range (0,maxIter):
         listVoisin = listerVoisin(tabTabu, x)
-        xbis = maximiserProfit(listVoisin) 
+        xbis = maximiserProfit(listVoisin)
         deltaf = sommeProfit(xbis) - sommeProfit(x)
         if deltaf >= 0 :
             if(len(tabTabu)==1):
                 tabTabu.clear()
             tabTabu.append(xbis)
-        if sommeProfit(xbis) < sommeProfit(xmin):
+        if sommeProfit(xbis) > sommeProfit(xmin):
             xmin = xbis.copy()
             fmin = sommeProfit(xbis)
-            print("c'est changer")
-        print(x)
         x = xbis.copy()
     return xmin, fmin
 
@@ -53,7 +51,6 @@ def sommeProfit(listItem):
     for i in range(0, nbItem):
         if listItem[i] == 1 :
             sum += int(tabProfit[i])
-    print(sum)
     return sum
 
 def isAccepted(listItem):
@@ -62,7 +59,7 @@ def isAccepted(listItem):
     for i in range(0, nbItem):
         if listItem[i] == 1 :
             sum += int(tabPoids[i])
-    return sum < maxCap
+    return (sum <= maxCap)
 
 def listerVoisin(tabTabu, listItem):
     listVoisin = []
@@ -78,7 +75,7 @@ def listerVoisin(tabTabu, listItem):
     return listVoisin
 
 def maximiserProfit(listVoisin):
-    max=0
+    max=-1
     betterVoisin = []
     i=0
     for i in range(0, len(listVoisin)):
