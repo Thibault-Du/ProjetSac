@@ -1,3 +1,5 @@
+from collections import deque
+
 tabId = []
 tabProfit = []
 tabPoids = []
@@ -22,23 +24,24 @@ def lireFichier(f):
     fichier.close()
     return int(nbItem), int(maxCap)
 
-nbItem, maxCap = lireFichier("data\pi-12-10000-1000-001.kna")
+nbItem, maxCap = lireFichier("data\pi-15-10000-1000-001.kna")
 
 def tabuSearch():
-    maxIter = 12
+    maxIter = 101
     xmin = solutionInitial()
     x = xmin.copy()
     fmin = sommeProfit(xmin)
     i = 0
-    tabTabu = []
+    queueTabu = deque([])
+    lenTabu = 4
     for i in range (0,maxIter):
-        listVoisin = listerVoisin(tabTabu, x)
+        listVoisin = listerVoisin(queueTabu, x)
         xbis = maximiserProfit(listVoisin)
         deltaf = sommeProfit(xbis) - sommeProfit(x)
         if deltaf >= 0 :
-            if(len(tabTabu)==1):
-                tabTabu.clear()
-            tabTabu.append(xbis)
+            if(len(queueTabu)==lenTabu):
+                queueTabu.popleft()
+            queueTabu.append(xbis)
         if sommeProfit(xbis) > sommeProfit(xmin):
             xmin = xbis.copy()
             fmin = sommeProfit(xbis)
