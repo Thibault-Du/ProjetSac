@@ -26,7 +26,7 @@ def lireFichier(f):
     fichier.close()
     return int(nbItem), int(maxCap)
 
-nbItem, maxCap = lireFichier("/Users/kawtharalaouimhammedi/Documents/POLYTECH/polytech_S8/Projet_Sac_à_dos/ProjetSac/data/pi-12-100-1000-001.kna")
+nbItem, maxCap = lireFichier("data/pi-12-100-1000-001.kna")
 
 def tabuSearch():
     maxIter = 101
@@ -97,7 +97,7 @@ def solutionInitial():
 
 
 
-
+#%% Reculé simulée
 def recuitSimule():
     T = 100  # Température initiale
     alpha = 0.99  # Facteur de refroidissement
@@ -142,10 +142,22 @@ def solutionInitial():
     return [0] * nbItem  
 
 # test
-fichier_test = "/Users/kawtharalaouimhammedi/Documents/POLYTECH/polytech_S8/Projet_Sac_à_dos/ProjetSac/data/pi-12-100-1000-001.kna"
+fichier_test = "data/pi-12-100-1000-001.kna"
 lireFichier(fichier_test)
 print(f"Capacité max: {maxCap}")
 best_solution, best_profit = recuitSimule()
 print(f"Meilleure solution trouvée: {best_solution}")
 print(f"Profit maximal obtenu: {best_profit}")
 
+#%% Algo génétique
+def gentique():
+    return 0
+
+def reproduction():
+    return 0
+
+def reproduction():
+    return 0
+
+def reproduction():
+    return 0
