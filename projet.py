@@ -1,4 +1,6 @@
+import random
 from collections import deque
+import math
 
 tabId = []
 tabProfit = []
@@ -24,7 +26,7 @@ def lireFichier(f):
     fichier.close()
     return int(nbItem), int(maxCap)
 
-nbItem, maxCap = lireFichier("data\pi-15-10000-1000-001.kna")
+nbItem, maxCap = lireFichier("/Users/kawtharalaouimhammedi/Documents/POLYTECH/polytech_S8/Projet_Sac_à_dos/ProjetSac/data/pi-12-100-1000-001.kna")
 
 def tabuSearch():
     maxIter = 101
@@ -90,5 +92,60 @@ def maximiserProfit(listVoisin):
 def solutionInitial():
     return [0] * int(nbItem)
 
-print(maxCap)
-print(tabuSearch())
+#print(maxCap)
+#print(tabuSearch())
+
+
+
+
+def recuitSimule():
+    T = 100  # Température initiale
+    alpha = 0.99  # Facteur de refroidissement
+    Tmin = 0.1  # Température minimale
+    iterMax = 1000  # Nombre d'itérations
+
+    x = solutionInitial()  # Solution initiale
+    x_best = x.copy()
+    f_best = sommeProfit(x)
+    
+    print("Début du recuit simulé...")
+    print(f"Température initiale: {T}")
+    
+    for iter in range(iterMax):
+        if T < Tmin:
+            break  # on arrete sii la température est trop basse
+        
+        voisin = genererVoisin(x)
+        deltaE = sommeProfit(voisin) - sommeProfit(x)
+        
+        if deltaE > 0 or random.random() < math.exp(deltaE / T):
+            x = voisin.copy()
+            if sommeProfit(x) > f_best:
+                x_best = x.copy()
+                f_best = sommeProfit(x)
+        
+        T *= alpha  # Réduction de la température
+        
+        if iter % 100 == 0:  # pour afficher l'état toutes les 100 itérations
+            print(f"Iteration {iter}, Température: {T:.2f}, Profit actuel: {sommeProfit(x)}")
+    
+    print("Recuit simulé terminé!!!!!!")
+    return x_best, f_best
+
+def genererVoisin(solution):
+    voisin = solution.copy()
+    i = random.randint(0, nbItem - 1)  # pour qu'onn change un élément aléatoirement
+    voisin[i] = 1 - voisin[i]  
+    return voisin if isAccepted(voisin) else solution  
+
+def solutionInitial():
+    return [0] * nbItem  
+
+# test
+fichier_test = "/Users/kawtharalaouimhammedi/Documents/POLYTECH/polytech_S8/Projet_Sac_à_dos/ProjetSac/data/pi-12-100-1000-001.kna"
+lireFichier(fichier_test)
+print(f"Capacité max: {maxCap}")
+best_solution, best_profit = recuitSimule()
+print(f"Meilleure solution trouvée: {best_solution}")
+print(f"Profit maximal obtenu: {best_profit}")
+
